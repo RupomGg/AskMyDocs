@@ -5,6 +5,10 @@ from embedder import embed_document_chunks
 from vector_store import store_chunks
 from retriever import retrieve
 from generator import generate_answer
+from keyword_search import KeywordSearcher
+from hybrid_retriever import hybrid_retrieve
+from reranker import Reranker
+
 
 def run_pipeline():
     # 1. Loading raw text using loader
@@ -34,11 +38,21 @@ def run_pipeline():
     print("\n--- 3. Generating Embeddings... (This calls Gemini, please wait) ---")
     embedded_chunks = embed_document_chunks(all_chunks)
 
-    # 4. Store in ChromaDB
-    print("\n--- 4. Storing in ChromaDB ---")
+    # 4. Building keyword_index
+    print("\n--- 4. Building Keyword Index ---")
+    keyword_searcher = KeywordSearcher()
+    keyword_searcher.build_index(all_chunks)
+    print("Keyword Index built successfully!")
+    
+    # 5. Store in ChromaDB
+    print("\n--- 5. Storing in ChromaDB ---")
     store_chunks(embedded_chunks)
 
-    # 5. Asking Questions!
+    #6 . initilazing reranker
+    print("\n--- 6. Initializing Reranker ---")
+    reranker = Reranker()
+
+    # 7. Asking Questions!
     print("\n\n========================================================")
     print("          🌟 RAG PIPELINE FULLY OPERATIONAL 🌟            ")
     print("========================================================\n")
@@ -60,12 +74,21 @@ def run_pipeline():
             
         print("-" * 50)
         
-        # Retrieve top 3 closest chunks
-        retrieved_chunks = retrieve(question, top_k=3)
+        # 1. Retrieve top 10 closest chunks
+        print("Running Hybrid Search...")
+        hybrid_chunks = hybrid_retrieve(question, keyword_searcher, top_k=10)
+
+        # 2. Rerank them based on absoulate relevance to the question
+        print("Rrnaking Top Results...")
+        reranked_chunks = reranker.rerank(question, hybrid_chunks)
         
-        # Pass the question and retrieved chunks to Gemini to generate the answer
-        final_answer = generate_answer(question, retrieved_chunks)
-        
+        # 3 . taking the top 3 chunks to send to gemini 
+
+        top_3_chunks = reranked_chunks[:3]
+
+        # 4 . Pass the question and retrieved chunks to Gemini to generate the answer
+        final_answer = generate_answer(question, top_3_chunks)
+
         print("\n🤖 AI ANSWER:")
         print(final_answer)
         print("========================================================")

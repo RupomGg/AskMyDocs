@@ -2,6 +2,9 @@ import os
 from google import genai
 from google.genai import types, errors
 from dotenv import load_dotenv
+from citation_checker import check_citation
+from prompts import ANSWER_PROMPT_V1
+
 
 load_dotenv()
 
@@ -26,24 +29,7 @@ def generate_answer(question: str, retrieved_chunks: list[dict]) -> str:
         context_text += chunk['text'] + "\n"
 
     # 2. Build the prompt for the AI model
-    prompt = f"""
-                You are a helpful and precise assistant. I will provide you with a set of document snippets and a question.
-
-                Your task is to answer the question using ONLY the provided document snippets.
-
-                If the answer is not contained in the snippets, say "I don't have enough information to answer that based on the provided documents." Do not guess or use outside knowledge.
-
-                When you provide a fact, you MUST cite the source file and chunk index that provided that fact.
-                Example citation format: "The framework uses a hierarchical attention mechanism (Source: Final_Journal.pdf, Chunk 3)."
-                Here are the document snippets:
-
-                {context_text}
-
-                Here is the user's question:
-                {question}
-
-                """
-    try:
+    prompt = ANSWER_PROMPT_V1.replace("{context}", context_text).replace("{question}", question)    try:
         print("Generating your question's answer...")
         response = client.models.generate_content(
             model=GENERATION_MODEL,
@@ -52,7 +38,14 @@ def generate_answer(question: str, retrieved_chunks: list[dict]) -> str:
                 temperature=0.2,  # low temperature keeps the AI factual
             )
         )
-        return response.text
+        final_answer = response.text
+
+        # -- citation Validation enforcement --
+        is_valid = check_citation(final_answer,retrieved_chunks)
+        
+        if not is_valid:
+            final_answer += "\n\n CAUTION: The AI generated an answer, but one or more facts (like numbers) could not be verified against the exact cited source chunk. Please double check the document!"
+        return final_answer
 
     except errors.APIError as e:
         if e.code == 429:

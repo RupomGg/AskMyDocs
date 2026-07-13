@@ -11,7 +11,7 @@ Write-Host "Activating virtual environment..."
 .\venv\Scripts\Activate.ps1
 
 Write-Host "Installing/Verifying required pip packages..."
-pip install -q google-genai python-dotenv chromadb tiktoken pypdf markitdown
+python -m pip install -q google-genai python-dotenv chromadb tiktoken pypdf markitdown rank-bm25 sentence-transformers
 
 Write-Host "Running pipeline..."
 cd src
