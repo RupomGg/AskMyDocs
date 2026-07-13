@@ -1,4 +1,3 @@
-import os
 from google import genai
 from google.genai import types, errors
 from dotenv import load_dotenv
@@ -29,7 +28,9 @@ def generate_answer(question: str, retrieved_chunks: list[dict]) -> str:
         context_text += chunk['text'] + "\n"
 
     # 2. Build the prompt for the AI model
-    prompt = ANSWER_PROMPT_V1.replace("{context}", context_text).replace("{question}", question)    try:
+    prompt = ANSWER_PROMPT_V1.replace("{context}", context_text).replace("{question}", question)
+    
+    try:
         print("Generating your question's answer...")
         response = client.models.generate_content(
             model=GENERATION_MODEL,
