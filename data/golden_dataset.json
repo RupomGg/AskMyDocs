@@ -1,0 +1,368 @@
+{
+  "_readme": "Golden dataset for Ask My Docs Phase 3 evaluation. expected_chunk_indices is left empty ([]) for most entries since actual chunk numbers depend on your real chunking run — fill these in by running retrieve() for each question once and recording which chunk indices genuinely contain the answer. Entries already known from earlier debugging (Final_Journal.pdf AUC comparisons) have chunk indices pre-filled from that prior investigation, but re-verify them since chunking may have shifted after any config changes.",
+
+  "_scoring_principle": "expected_answer_summary is a MINIMUM correctness bar, not an exact-match target. When scoring manually (Part B of the Phase 3 plan), an answer that includes the summarized facts PLUS additional accurate detail should be scored as correct/pass, not penalized for going beyond the summary. Only mark an entry as failed if the answer is missing/wrong on the core facts in expected_answer_summary, contradicts them, or fabricates something not supported by the cited chunks.",
+
+  "entries": [
+    {
+      "id": "gd_001",
+      "question": "What three modalities does XEB-FuseNet fuse?",
+      "expected_answer_summary": "Chest X-ray (CXR) images, ECG signals, and blood laboratory data",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [],
+      "answer_type": "factual",
+      "notes": ""
+    },
+    {
+      "id": "gd_002",
+      "question": "What dataset was used for training and evaluation?",
+      "expected_answer_summary": "Symile-MIMIC, covering 11,622 hospital admissions",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [6, 7],
+      "answer_type": "factual",
+      "notes": "Verified against real pipeline output. Model correctly expanded on the summary with accurate extra detail (three source datasets: MIMIC-IV, MIMIC-CXR-JPEG, MIMIC-IV ECG; train/test/val split). This is a PASS, not a failure — expected_answer_summary is a minimum bar, not an exact-match target. A correct answer with more accurate detail than the summary should score as correct."
+    },
+    {
+      "id": "gd_003",
+      "question": "What is the AUC of Triple Fusion for Edema using the best-performing backbone?",
+      "expected_answer_summary": "0.9052, achieved with DenseNet121+1D-InceptionTime+Blood",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [23],
+      "answer_type": "numeric",
+      "notes": "Verified against Table VI"
+    },
+    {
+      "id": "gd_004",
+      "question": "For which disease class does Dual Fusion outperform Triple Fusion on AUC?",
+      "expected_answer_summary": "Atelectasis — Dual Fusion AUC 0.7746 vs Triple Fusion's 0.7579/0.7516",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [22],
+      "answer_type": "comparison",
+      "notes": "This is the one exception the paper itself calls out"
+    },
+    {
+      "id": "gd_005",
+      "question": "What AUC did Triple Fusion achieve for Lung Opacity using the InceptionNet-V3 backbone?",
+      "expected_answer_summary": "0.8122",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [22],
+      "answer_type": "numeric",
+      "notes": "Table VIII. Source of the original Cardiomegaly/Lung Opacity mixup bug."
+    },
+    {
+      "id": "gd_006",
+      "question": "What AUC did Triple Fusion achieve for Cardiomegaly using the InceptionNet-V3 backbone?",
+      "expected_answer_summary": "0.7610",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [22, 23],
+      "answer_type": "numeric",
+      "notes": "Table V. Source of the original Cardiomegaly/Lung Opacity mixup bug."
+    },
+    {
+      "id": "gd_007",
+      "question": "Which class has the lowest peak Triple Fusion AUC overall?",
+      "expected_answer_summary": "Atelectasis, at 0.7579 (peak among Triple Fusion configs, per Table IV)",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [22],
+      "answer_type": "comparison",
+      "notes": "Known weak spot: requires retrieval to surface all 5 tables; top-k retrieval may miss this and give a wrong or incomplete answer. Good test of retrieval coverage."
+    },
+    {
+      "id": "gd_008",
+      "question": "How many parameters does the Stage-1 fusion module have?",
+      "expected_answer_summary": "Approximately 0.67M parameters (Stage-2 is the separate 0.06M figure — do not confuse the two)",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [26],
+      "answer_type": "numeric",
+      "notes": "FAILED on first real test run: model answered 0.06M (Stage-2's figure) instead of 0.67M (Stage-1's actual figure), citing Chunk 26. This is a semantic misattribution, not a fabricated number — 0.06M is genuinely present in the cited chunk, so citation_checker.py correctly passes it (the number is real) while the answer is still wrong (attributed to the wrong stage). Distinct failure class from the earlier Cardiomegaly/Lung Opacity bug: numeric-hallucination-detection and correct-attribution-detection are two different problems, and citation enforcement only solves the first one."
+    },
+    {
+      "id": "gd_009",
+      "question": "What statistical test was used to compare AUC across fusion types?",
+      "expected_answer_summary": "DeLong's test",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [26],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — correct answer, correct citation."
+    },
+    {
+      "id": "gd_010",
+      "question": "For which two classes did blood biomarkers show no statistically significant benefit?",
+      "expected_answer_summary": "Cardiomegaly and Atelectasis (e.g. Cardiomegaly Dual vs Triple: p = 0.0838)",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [27],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — correctly identified both classes, correct citation."
+    },
+    {
+      "id": "gd_011",
+      "question": "What optimizer and learning rate range were used in training?",
+      "expected_answer_summary": "AdamW optimizer, learning rate 1.5e-4 to 3e-4",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [18],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — correct values, correct citation."
+    },
+    {
+      "id": "gd_012",
+      "question": "What was XEB-FuseNet's performance on the CheXpert dataset?",
+      "expected_answer_summary": "Not answerable — the paper only evaluates on Symile-MIMIC, not CheXpert",
+      "expected_source_files": ["Final_Journal.pdf"],
+      "expected_chunk_indices": [],
+      "answer_type": "full_decline",
+      "notes": "PASSED on real pipeline test — correctly declined rather than inventing a number. CheXpert is mentioned only in passing (as a dataset the authors chose not to use)."
+    },
+    {
+      "id": "gd_013",
+      "question": "What blockchain networks are being considered for the Indico Asset Ledger platform?",
+      "expected_answer_summary": "Solana (SPL token) or an Ethereum Layer 2 — one, not both",
+      "expected_source_files": ["Indico_Asset_Ledger_Complete_Feature_List.pdf"],
+      "expected_chunk_indices": [0, 1],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — correctly named both options and the 'one, not both' constraint."
+    },
+    {
+      "id": "gd_014",
+      "question": "Is KYC or ID verification required for merchants on the Indico Asset Ledger platform?",
+      "expected_answer_summary": "No — signed agreement stands in place of identity documents",
+      "expected_source_files": ["Indico_Asset_Ledger_Complete_Feature_List.pdf"],
+      "expected_chunk_indices": [0, 1],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — correct answer, correct citation."
+    },
+    {
+      "id": "gd_015",
+      "question": "Is there a public marketplace or secondary market in the Indico Asset Ledger platform?",
+      "expected_answer_summary": "No — explicitly out of scope; no public marketplace, open trading, or secondary market of any kind",
+      "expected_source_files": ["Indico_Asset_Ledger_Complete_Feature_List.pdf"],
+      "expected_chunk_indices": [0],
+      "answer_type": "factual",
+      "notes": "FAILED on real pipeline test — this is exactly the predicted risk called out when this entry was written. The model pulled in the separate Goldfinance/Aurumchain secondary market spec (a different project entirely) and presented its architecture as relevant context, only weakly noting at the end that Indico's own list doesn't include a secondary market. Root cause is likely hybrid retrieval (especially BM25 keyword matching) surfacing the Goldfinance chunk due to strong keyword overlap ('secondary market', 'public marketplace') despite it belonging to an unrelated project. This is a NEW failure category, distinct from the earlier within-document misattribution bugs: cross-document conflation, where topically-similar content from the wrong source gets blended into the answer as if relevant. Worth a dedicated fix: e.g. filtering/boosting by expected_source_files during retrieval when the question names a specific platform, or a stricter prompt instruction to flag when retrieved chunks span multiple distinct projects."
+    },
+    {
+      "id": "gd_016",
+      "question": "How many signers are required for escrow release in the Indico Asset Ledger platform?",
+      "expected_answer_summary": "Three (multi-signature release policy)",
+      "expected_source_files": ["Indico_Asset_Ledger_Complete_Feature_List.pdf"],
+      "expected_chunk_indices": [2],
+      "answer_type": "numeric",
+      "notes": "PASSED on real pipeline test — correct answer, correct citation, correctly scoped to Indico (no cross-document conflation this time)."
+    },
+    {
+      "id": "gd_017",
+      "question": "Is there a platform fee on transactions in the Indico Asset Ledger platform?",
+      "expected_answer_summary": "No platform fee charged on any transaction",
+      "expected_source_files": ["Indico_Asset_Ledger_Complete_Feature_List.pdf"],
+      "expected_chunk_indices": [0, 1],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test. Notable: 'fee' is a topic present in BOTH Indico (no fee) and Goldfinance (1% seller-paid fee) documents, carrying the same cross-document conflation risk as gd_015 — but this time correctly stayed scoped to Indico only. Suggests the conflation bug is retrieval-condition-dependent, not universal across all topically-overlapping questions."
+    },
+    {
+      "id": "gd_018",
+      "question": "What happens when a user marks a loan as repaid on the Indico Asset Ledger platform?",
+      "expected_answer_summary": "Collateral is released back automatically once repayment is confirmed",
+      "expected_source_files": ["Indico_Asset_Ledger_Complete_Feature_List.pdf", "MVP_Scope_Feature_Proposal.docx"],
+      "expected_chunk_indices": [0, 1],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test. Correctly pulled in MVP_Scope_Feature_Proposal.docx alongside the main feature list — this is legitimate within-project cross-referencing (same Indico project), distinct from the earlier Goldfinance cross-PROJECT conflation bug on gd_015. Good confirmation that same-project multi-doc synthesis works correctly."
+    },
+    {
+      "id": "gd_019",
+      "question": "What programming language is the Indico Asset Ledger platform built in?",
+      "expected_answer_summary": "Not stated in this document",
+      "expected_source_files": ["Indico_Asset_Ledger_Complete_Feature_List.pdf"],
+      "expected_chunk_indices": [],
+      "answer_type": "full_decline",
+      "notes": "PASSED on real pipeline test — correctly declined rather than guessing from blockchain/smart contract mentions."
+    },
+    {
+      "id": "gd_020",
+      "question": "What date is the Indico Asset Ledger feature list document dated?",
+      "expected_answer_summary": "8 July 2026",
+      "expected_source_files": ["Indico_Asset_Ledger_Complete_Feature_List.pdf"],
+      "expected_chunk_indices": [0],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — exact match."
+    },
+    {
+      "id": "gd_021",
+      "question": "What is Radwan's current job title and company?",
+      "expected_answer_summary": "Junior Back-End Engineer / Jr Software Engineer, Betopia Group (title varies slightly between the two CV versions in the corpus)",
+      "expected_source_files": ["MD_RADWAN_AHAMED_Data_Analyst_.pdf", "MD_RADWAN_AHAMED_Ai_ML.pdf"],
+      "expected_chunk_indices": [0],
+      "answer_type": "comparison",
+      "notes": "PASSED on real pipeline test. Interesting real finding: two different CV versions in the corpus (Data_Analyst and Ai_ML) use slightly different job titles for the same current role at Betopia ('Junior Back-End Engineer' vs 'Jr Software Engineer'). Model correctly and honestly reported both rather than picking one — this is a genuine source-document inconsistency, not a model hallucination. Reclassified from 'factual' to 'comparison' since it inherently involves reconciling two documents."
+    },
+    {
+      "id": "gd_022",
+      "question": "What CGPA did Radwan achieve at BRAC University?",
+      "expected_answer_summary": "3.32 out of 4.00",
+      "expected_source_files": ["MD_RADWAN_AHAMED_Data_Analyst_.pdf", "MD_RADWAN_AHAMED_Ai_ML.pdf"],
+      "expected_chunk_indices": [1],
+      "answer_type": "numeric",
+      "notes": "PASSED on real pipeline test — exact match, consistent across both CV versions in the corpus."
+    },
+    {
+      "id": "gd_023",
+      "question": "How many on-chain transactions does Radwan audit daily at Betopia?",
+      "expected_answer_summary": "150–250 transactions daily",
+      "expected_source_files": ["MD_RADWAN_AHAMED_Data_Analyst_.pdf", "MD_RADWAN_AHAMED_Ai_ML.pdf"],
+      "expected_chunk_indices": [0],
+      "answer_type": "numeric",
+      "notes": "PASSED on real pipeline test — exact match, consistent across both CV versions in the corpus."
+    },
+    {
+      "id": "gd_024",
+      "question": "What SLA breach count did Radwan's courier company BI project surface?",
+      "expected_answer_summary": "168 SLA breaches",
+      "expected_source_files": ["MD_RADWAN_AHAMED_Data_Analyst_.pdf"],
+      "expected_chunk_indices": [0],
+      "answer_type": "numeric",
+      "notes": "PASSED on real pipeline test — exact match, single clean citation."
+    },
+    {
+      "id": "gd_025",
+      "question": "What AUC did Radwan's Data Pipeline Research project achieve for Edema detection?",
+      "expected_answer_summary": "0.916",
+      "expected_source_files": ["MD_RADWAN_AHAMED_Data_Analyst_.pdf"],
+      "expected_chunk_indices": [1],
+      "answer_type": "numeric",
+      "notes": "PASSED on real pipeline test — correctly sourced the CV's own stated 0.916 figure, not conflated with Final_Journal.pdf's more precise 0.9052. Good groundwork for gd_027 (cross-document consistency check)."
+    },
+    {
+      "id": "gd_026",
+      "question": "What certification does Radwan hold, and from which provider?",
+      "expected_answer_summary": "SQL (Advanced) Certification, from HackerRank",
+      "expected_source_files": ["MD_RADWAN_AHAMED_Data_Analyst_.pdf"],
+      "expected_chunk_indices": [1],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — exact match, correct citation."
+    },
+    {
+      "id": "gd_027",
+      "question": "Is the AUC for Edema in Radwan's CV (0.916) the same figure as in Final_Journal.pdf (0.9052)?",
+      "expected_answer_summary": "No — they differ slightly (0.916 in the CV's rounded/summary framing vs 0.9052 as the precise figure in the paper). Both describe the same underlying research.",
+      "expected_source_files": ["MD_RADWAN_AHAMED_Data_Analyst_.pdf", "Final_Journal.pdf"],
+      "expected_chunk_indices": [1],
+      "answer_type": "comparison",
+      "notes": "FAILED on real pipeline test — a new, distinct failure type. Retrieval correctly surfaced Final_Journal.pdf's 0.9052 figure but completely failed to retrieve the CV chunk containing '0.916', even though that exact chunk was correctly retrieved moments earlier in gd_022/gd_023/gd_025/gd_026. The model then incorrectly concluded 'there is no mention of Radwan's CV' — an honest report given what it received, but a retrieval failure being surfaced as a content failure. Different from gd_007's 'best/worst across N categories' coverage gap: this question explicitly names both documents and both numbers, yet hybrid retrieval still didn't fetch chunks from both named sources on a query written as one blended comparison question rather than treating it as two explicit lookups."
+    },
+    {
+      "id": "gd_028",
+      "question": "In what year did the first national Space Invaders tournament occur, and how many people attended?",
+      "expected_answer_summary": "1980, attended by 10,000 people",
+      "expected_source_files": ["What is Esports.md"],
+      "expected_chunk_indices": [0],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — exact match."
+    },
+    {
+      "id": "gd_029",
+      "question": "According to the document, does esports qualify as a sport?",
+      "expected_answer_summary": "Yes, per the document's own argument — it meets the three-part definition of physical effort, skill, and competition for amusement",
+      "expected_source_files": ["What is Esports.md"],
+      "expected_chunk_indices": [0, 1],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — correctly reproduced the document's own three-part argument (physical effort, skill, competition) with accurate supporting detail for each."
+    },
+    {
+      "id": "gd_030",
+      "question": "What is the current total global esports viewership according to the document?",
+      "expected_answer_summary": "Not stated in this document",
+      "expected_source_files": ["What is Esports.md"],
+      "expected_chunk_indices": [],
+      "answer_type": "full_decline",
+      "notes": "PASSED on real pipeline test — correctly declined and did not conflate the 1998 Starcraft 2 tournament's 50 million viewership figure (a real but different, historical, one-event number) with 'current total global viewership.' Good sign that the decline pattern generalizes across topics, not just the CheXpert case."
+    },
+    {
+      "id": "gd_031",
+      "question": "What type of secondary market architecture is used — AMM or order book?",
+      "expected_answer_summary": "A controlled, peer-to-peer, internal order-book style marketplace — explicitly not a decentralized AMM or public liquidity pool",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [0, 1],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — exact match, correctly scoped to Goldfinance only (no conflation with Indico this direction, interestingly — the conflation bug on gd_015 only appeared when querying FROM Indico's document about a topic Goldfinance also covers, not the reverse)."
+    },
+    {
+      "id": "gd_032",
+      "question": "What matching priority rule governs trade execution in the secondary market?",
+      "expected_answer_summary": "Price-time priority (FIFO) — lowest price matched first, then oldest listing first at the same price",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [0],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — exact match, both components (lowest-price-first, FIFO at same price) correctly captured."
+    },
+    {
+      "id": "gd_033",
+      "question": "Are seller identities visible to other users in the secondary market?",
+      "expected_answer_summary": "No — seller identities remain strictly anonymous; listings are aggregated by price level",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [0],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — exact match."
+    },
+    {
+      "id": "gd_034",
+      "question": "What is the default trade fee structure at MVP launch, and what percentage?",
+      "expected_answer_summary": "NEEDS VERIFICATION — original entry stated Seller-Paid Fee, 1.0%, but real pipeline run found only a 1.50% EXAMPLE in the technical spec with no explicit stated default, and correctly declined to state a specific default percentage rather than guess. Could be either (a) an error in the original golden-dataset entry, or (b) a genuine retrieval gap missing a chunk that states the true default separately from the 1.50% example. Re-check the source document directly before scoring this entry either way.",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md", "MVP_Scope_Feature_Proposal.docx"],
+      "expected_chunk_indices": [0, 2],
+      "answer_type": "numeric",
+      "notes": "UNRESOLVED — do not mark pass/fail until the source document is manually re-checked for the actual stated default fee percentage."
+    },
+    {
+      "id": "gd_035",
+      "question": "What are the two levels at which admins can pause trading in the secondary market?",
+      "expected_answer_summary": "Global Halt (all trading platform-wide) and Project Halt (a specific project mint)",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [5, 6],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — correctly named both levels plus accurate additional technical detail (MarketConfig state, create_sell_order/fill_order instruction checks)."
+    },
+    {
+      "id": "gd_036",
+      "question": "Per the UAT test cases, what happens if a user tries to list 100 tokens with only 50 available?",
+      "expected_answer_summary": "Fails — 'Insufficient available'",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [6],
+      "answer_type": "numeric",
+      "notes": "PASSED on real pipeline test — exact match."
+    },
+    {
+      "id": "gd_037",
+      "question": "If Seller A lists at $1.00 and Seller B lists at $0.90, who fills first on a purchase?",
+      "expected_answer_summary": "Seller B — lower price takes priority",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [6],
+      "answer_type": "comparison",
+      "notes": "PASSED on real pipeline test — exact match, correctly applied the price-priority rule from gd_032 to this specific scenario."
+    },
+    {
+      "id": "gd_038",
+      "question": "Who remains the legal and economic owner of tokens while a sell order is active but unfilled?",
+      "expected_answer_summary": "The seller — tokens are not transferred to a buyer until the trade executes on-chain",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [],
+      "answer_type": "factual",
+      "notes": "NOT YET TESTED against real pipeline."
+    },
+    {
+      "id": "gd_039",
+      "question": "What programming language is used for the frontend of the secondary market platform?",
+      "expected_answer_summary": "Not explicitly stated — Next.js is named as the framework, but no specific language (e.g. TypeScript vs JavaScript) is confirmed",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [0, 1],
+      "answer_type": "full_decline",
+      "notes": "PASSED on real pipeline test — correctly declined, and correctly distinguished 'framework named' (Next.js/Supabase) from 'language not stated,' rather than incorrectly inferring JavaScript/TypeScript from the framework name alone."
+    },
+    {
+      "id": "gd_040",
+      "question": "What three on-chain instructions does the secondary_market Solana program expose?",
+      "expected_answer_summary": "create_sell_order, cancel_sell_order, and fill_order",
+      "expected_source_files": ["Goldfinance_Secondary_Market_Requirements.md"],
+      "expected_chunk_indices": [2],
+      "answer_type": "factual",
+      "notes": "PASSED on real pipeline test — all three instructions correctly named with accurate supporting detail on what each does."
+    }
+  ]
+}

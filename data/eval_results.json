@@ -1,0 +1,380 @@
+[
+    {
+        "id": "gd_001",
+        "question": "What three modalities does XEB-FuseNet fuse?",
+        "expected_answer_summary": "Chest X-ray (CXR) images, ECG signals, and blood laboratory data",
+        "generated_answer": "XEB-FuseNet fuses the following three modalities: chest X-rays (CXR), ECG signals, and blood laboratory data (Source: Final_Journal.pdf, Chunk 2). These are also referred to as radiological, physiological, and biochemical data (Source: Final_Journal.pdf, Chunk 2).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_002",
+        "question": "What dataset was used for training and evaluation?",
+        "expected_answer_summary": "Symile-MIMIC, covering 11,622 hospital admissions",
+        "generated_answer": "The dataset used for this work is the **Symile-MIMIC dataset**, a multimodal clinical resource from PhysioNet (Source: Final_Journal.pdf, Chunk 6). \n\nThis dataset is derived from three distinct source datasets:\n*   **MIMIC-IV** (Source: Final_Journal.pdf, Chunk 6)\n*   **MIMIC-CXR-JPEG** (Source: Final_Journal.pdf, Chunk 6)\n*   **MIMIC-IV ECG** (Source: Final_Journal.pdf, Chunk 6)\n\nThe dataset was preprocessed and split into five subsets for training, testing, and validation (Source: Final_Journal.pdf, Chunk 7). It includes temporally aligned data for 11,622 hospital admissions, consisting of chest X-rays (CXRs), electrocardiograms (ECGs), and blood laboratory measurements (Source: Final_Journal.pdf, Chunk 6).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_003",
+        "question": "What is the AUC of Triple Fusion for Edema using the best-performing backbone?",
+        "expected_answer_summary": "0.9052, achieved with DenseNet121+1D-InceptionTime+Blood",
+        "generated_answer": "The AUC of Triple Fusion for Edema using the best-performing backbone (DenseNet121+1D-InceptionTime+Blood) is 0.9052 (Source: Final_Journal.pdf, Chunk 1, 23, 24).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_004",
+        "question": "For which disease class does Dual Fusion outperform Triple Fusion on AUC?",
+        "expected_answer_summary": "Atelectasis \u2014 Dual Fusion AUC 0.7746 vs Triple Fusion's 0.7579/0.7516",
+        "generated_answer": "Dual Fusion outperforms Triple Fusion on AUC for the **Atelectasis** disease class (Source: Final_Journal.pdf, Chunk 22, 24). \n\nSpecifically, for Atelectasis, Dual Fusion achieved an AUC of 0.775 (or 0.7746), which was the highest performance for that metric, whereas Triple Fusion delivered superior results in other metrics like F1-score and Accuracy (Source: Final_Journal.pdf, Chunk 22, 24).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_005",
+        "question": "What AUC did Triple Fusion achieve for Lung Opacity using the InceptionNet-V3 backbone?",
+        "expected_answer_summary": "0.8122",
+        "generated_answer": "For Lung Opacity, the Triple Fusion (XEB-FuseNet) framework anchored by the InceptionNet-V3 backbone achieved an AUC of 0.8122 (Source: Final_Journal.pdf, Chunk 22, 23).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_006",
+        "question": "What AUC did Triple Fusion achieve for Cardiomegaly using the InceptionNet-V3 backbone?",
+        "expected_answer_summary": "0.7610",
+        "generated_answer": "For Cardiomegaly, the Triple Fusion framework (XEB-FuseNet) utilizing the InceptionNet-V3 backbone achieved a peak AUC of 0.7610 (Source: Final_Journal.pdf, Chunk 22, 23).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_007",
+        "question": "Which class has the lowest peak Triple Fusion AUC overall?",
+        "expected_answer_summary": "Atelectasis, at 0.7579 (peak among Triple Fusion configs, per Table IV)",
+        "generated_answer": "Based on the provided documents, the class with the lowest peak Triple Fusion AUC is **Cardiomegaly**.\n\nThe peak Triple Fusion AUC values for the pathologies with provided data are as follows:\n*   **Cardiomegaly:** The peak AUC for the Triple Fusion framework (XEB-FuseNet) is **0.7610**, achieved using the InceptionNet-V3 backbone (Source: Final_Journal.pdf, Chunk 22, 23).\n*   **Lung Opacity:** The peak AUC for the Triple Fusion framework is **0.8122**, also achieved with the InceptionNet-V3 backbone (Source: Final_Journal.pdf, Chunk 22, 23).\n*   **Edema:** The peak AUC for the Triple Fusion framework is **0.9052**, achieved using the DenseNet121 backbone (Source: Final_Journal.pdf, Chunk 23, 24).\n\nFor **Atelectasis**, the documents state that Dual Fusion achieved the highest performance with an AUC of **0.775** (or 0.7746), but the specific Triple Fusion AUC value is not provided in the snippets (Source: Final_Journal.pdf, Chunk 22, 24). No AUC data is provided for **Pleural Effusion**.\n\nAmong the classes where peak Triple Fusion AUC values are explicitly listed, Cardiomegaly's peak of 0.7610 is the lowest.",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_008",
+        "question": "How many parameters does the Stage-1 fusion module have?",
+        "expected_answer_summary": "Approximately 0.67M parameters (Stage-2 is the separate 0.06M figure \u2014 do not confuse the two)",
+        "generated_answer": "The hierarchical fusion blocks, which include the Stage-1 fusion module, require **0.06M parameters** (Source: Final_Journal.pdf, Chunk 26). These blocks are described as lightweight compared to the backbone encoders (Source: Final_Journal.pdf, Chunk 26).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_009",
+        "question": "What statistical test was used to compare AUC across fusion types?",
+        "expected_answer_summary": "DeLong's test",
+        "generated_answer": "To compare the Area Under the Curve (AUC) across unimodal, dual-fusion, and triple-fusion architectures, DeLong\u2019s test was utilized (Source: Final_Journal.pdf, Chunk 26).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_010",
+        "question": "For which two classes did blood biomarkers show no statistically significant benefit?",
+        "expected_answer_summary": "Cardiomegaly and Atelectasis (e.g. Cardiomegaly Dual vs Triple: p = 0.0838)",
+        "generated_answer": "The addition of blood biomarkers provided no statistically significant benefit for the classes of **Cardiomegaly** and **Atelectasis** (Source: Final_Journal.pdf, Chunk 27).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_011",
+        "question": "What optimizer and learning rate range were used in training?",
+        "expected_answer_summary": "AdamW optimizer, learning rate 1.5e-4 to 3e-4",
+        "generated_answer": "The optimizer used in training was **AdamW**, and the learning rate range was **1.5\u00d710\u207b\u2074 to 3\u00d710\u207b\u2074** (Source: Final_Journal.pdf, Chunk 18).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_012",
+        "question": "What was XEB-FuseNet's performance on the CheXpert dataset?",
+        "expected_answer_summary": "Not answerable \u2014 the paper only evaluates on Symile-MIMIC, not CheXpert",
+        "generated_answer": "I don't have enough information to answer that based on the provided documents. While the snippets provide performance metrics for XEB-FuseNet on various pathologies (such as Edema, Lung Opacity, and Cardiomegaly), they do not explicitly identify the dataset as CheXpert.",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_013",
+        "question": "What blockchain networks are being considered for the Indico Asset Ledger platform?",
+        "expected_answer_summary": "Solana (SPL token) or an Ethereum Layer 2 \u2014 one, not both",
+        "generated_answer": "The Indico Asset Ledger platform is considering two options for its blockchain network: **Solana** (using SPL tokens) or an **Ethereum Layer 2** (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 0, 1). \n\nThe project plan specifies that only one of these networks will be chosen for the current phase, rather than using both (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 1). Depending on the final choice, the platform will support specific wallets: Phantom or Tangem for Solana, or MetaMask for Ethereum L2 (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 0).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_014",
+        "question": "Is KYC or ID verification required for merchants on the Indico Asset Ledger platform?",
+        "expected_answer_summary": "No \u2014 signed agreement stands in place of identity documents",
+        "generated_answer": "No, KYC or ID verification is not required for merchants on the Indico Asset Ledger platform. Instead, a signed merchant agreement stands in place of identity documents per a confirmed decision (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 0, 1).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_015",
+        "question": "Is there a public marketplace or secondary market in the Indico Asset Ledger platform?",
+        "expected_answer_summary": "No \u2014 explicitly out of scope; no public marketplace, open trading, or secondary market of any kind",
+        "generated_answer": "Based on the provided documents, there is no **public** marketplace on the platform. Instead, the system is designed to include a **controlled, internal secondary marketplace** (Source: Goldfinance Secondary Market Requirements.md, Chunk 0).\n\nKey details regarding the secondary market include:\n\n*   **Internal and Controlled:** The secondary market is a peer-to-peer, internal order-book style marketplace. It explicitly does not use public liquidity pools or a decentralized Automated Market Maker (AMM) (Source: Goldfinance Secondary Market Requirements.md, Chunk 0).\n*   **Restricted Access:** All secondary market actions\u2014including listing, buying, and cancelling\u2014require real-time KYC validation and are restricted to allow-listed wallets (Source: Goldfinance Secondary Market Requirements.md, Chunk 0).\n*   **Limited Functionality:** \"Open-market bids/buy orders (buyer bids)\" are excluded from the MVP and the future roadmap (Source: Goldfinance Secondary Market Requirements.md, Chunk 0, 1).\n*   **Implementation Phase:** This internal secondary market is designated for the \"Second Phase of the MVP\" (Source: Goldfinance Secondary Market Requirements.md, Chunk 0).\n*   **Indico Asset Ledger Features:** The \"Complete Feature List\" for the Indico Asset Ledger (dated July 8, 2026) focuses on asset submission, credit issuance, and loan management; it does not include a secondary market or public marketplace in its list of confirmed features (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 0).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_016",
+        "question": "How many signers are required for escrow release in the Indico Asset Ledger platform?",
+        "expected_answer_summary": "Three (multi-signature release policy)",
+        "generated_answer": "The Indico Asset Ledger platform requires three verifying parties for the multi-signature release of escrowed funds or collateral (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 2).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_017",
+        "question": "Is there a platform fee on transactions in the Indico Asset Ledger platform?",
+        "expected_answer_summary": "No platform fee charged on any transaction",
+        "generated_answer": "No, there is no platform fee charged on any transaction on the Indico Asset Ledger platform (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 0, 1).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_018",
+        "question": "What happens when a user marks a loan as repaid on the Indico Asset Ledger platform?",
+        "expected_answer_summary": "Collateral is released back automatically once repayment is confirmed",
+        "generated_answer": "When a user marks a loan as repaid on the Indico Asset Ledger platform, the following actions occur:\n\n*   **Collateral Release:** The pledged collateral is released back to the user automatically once the repayment is confirmed (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 0).\n*   **Confirmation and Escrow:** The merchant or admin confirms the loan repayment, which triggers the release of the locked collateral from the smart contract escrow (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 1).\n*   **Credit Availability:** Once the admin confirms the resolution and unlocks the credit, it becomes spendable again for the user (Source: MVP_Scope_Feature_Proposal.docx, Chunk 1).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_019",
+        "question": "What programming language is the Indico Asset Ledger platform built in?",
+        "expected_answer_summary": "Not stated in this document",
+        "generated_answer": "I don't have enough information to answer that based on the provided documents.",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_020",
+        "question": "What date is the Indico Asset Ledger feature list document dated?",
+        "expected_answer_summary": "8 July 2026",
+        "generated_answer": "The Indico Asset Ledger feature list document is dated 8 July 2026 (Source: Indico_Asset_Ledger_Complete_Feature_List.pdf, Chunk 0).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_021",
+        "question": "What is Radwan's current job title and company?",
+        "expected_answer_summary": "Junior Back-End Engineer / Jr Software Engineer, Betopia Group (title varies slightly between the two CV versions in the corpus)",
+        "generated_answer": "Radwan's current company is Betopia Group (Source: MD_RADWAN_AHAMED_Data_Analyst_.pdf, Chunk 0; MD_RADWAN_AHAMED_Ai_ML.pdf, Chunk 0). His job title is listed as Junior Back-End Engineer (Source: MD_RADWAN_AHAMED_Data_Analyst_.pdf, Chunk 0) or Jr Software Engineer (Source: MD_RADWAN_AHAMED_Ai_ML.pdf, Chunk 0).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_030",
+        "question": "What is the current total global esports viewership according to the document?",
+        "expected_answer_summary": "Not stated in this document",
+        "generated_answer": "I don't have enough information to answer that based on the provided documents. The documents mention that a Starcraft 2 tournament in 1998 attracted over 50 million live spectators, but they do not provide a figure for current total global esports viewership (Source: What is Esports.md, Chunk 0).",
+        "passed_citation": true,
+        "retrieval_coverage": true,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_022",
+        "question": "What CGPA did Radwan achieve at BRAC University?",
+        "expected_answer_summary": "3.32 out of 4.00",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_023",
+        "question": "How many on-chain transactions does Radwan audit daily at Betopia?",
+        "expected_answer_summary": "150\u2013250 transactions daily",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_024",
+        "question": "What SLA breach count did Radwan's courier company BI project surface?",
+        "expected_answer_summary": "168 SLA breaches",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_025",
+        "question": "What AUC did Radwan's Data Pipeline Research project achieve for Edema detection?",
+        "expected_answer_summary": "0.916",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_026",
+        "question": "What certification does Radwan hold, and from which provider?",
+        "expected_answer_summary": "SQL (Advanced) Certification, from HackerRank",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_027",
+        "question": "Is the AUC for Edema in Radwan's CV (0.916) the same figure as in Final_Journal.pdf (0.9052)?",
+        "expected_answer_summary": "No \u2014 they differ slightly (0.916 in the CV's rounded/summary framing vs 0.9052 as the precise figure in the paper). Both describe the same underlying research.",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_028",
+        "question": "In what year did the first national Space Invaders tournament occur, and how many people attended?",
+        "expected_answer_summary": "1980, attended by 10,000 people",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_029",
+        "question": "According to the document, does esports qualify as a sport?",
+        "expected_answer_summary": "Yes, per the document's own argument \u2014 it meets the three-part definition of physical effort, skill, and competition for amusement",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_031",
+        "question": "What type of secondary market architecture is used \u2014 AMM or order book?",
+        "expected_answer_summary": "A controlled, peer-to-peer, internal order-book style marketplace \u2014 explicitly not a decentralized AMM or public liquidity pool",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_032",
+        "question": "What matching priority rule governs trade execution in the secondary market?",
+        "expected_answer_summary": "Price-time priority (FIFO) \u2014 lowest price matched first, then oldest listing first at the same price",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_033",
+        "question": "Are seller identities visible to other users in the secondary market?",
+        "expected_answer_summary": "No \u2014 seller identities remain strictly anonymous; listings are aggregated by price level",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_034",
+        "question": "What is the default trade fee structure at MVP launch, and what percentage?",
+        "expected_answer_summary": "NEEDS VERIFICATION \u2014 original entry stated Seller-Paid Fee, 1.0%, but real pipeline run found only a 1.50% EXAMPLE in the technical spec with no explicit stated default, and correctly declined to state a specific default percentage rather than guess. Could be either (a) an error in the original golden-dataset entry, or (b) a genuine retrieval gap missing a chunk that states the true default separately from the 1.50% example. Re-check the source document directly before scoring this entry either way.",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_035",
+        "question": "What are the two levels at which admins can pause trading in the secondary market?",
+        "expected_answer_summary": "Global Halt (all trading platform-wide) and Project Halt (a specific project mint)",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_036",
+        "question": "Per the UAT test cases, what happens if a user tries to list 100 tokens with only 50 available?",
+        "expected_answer_summary": "Fails \u2014 'Insufficient available'",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_037",
+        "question": "If Seller A lists at $1.00 and Seller B lists at $0.90, who fills first on a purchase?",
+        "expected_answer_summary": "Seller B \u2014 lower price takes priority",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_038",
+        "question": "Who remains the legal and economic owner of tokens while a sell order is active but unfilled?",
+        "expected_answer_summary": "The seller \u2014 tokens are not transferred to a buyer until the trade executes on-chain",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_039",
+        "question": "What programming language is used for the frontend of the secondary market platform?",
+        "expected_answer_summary": "Not explicitly stated \u2014 Next.js is named as the framework, but no specific language (e.g. TypeScript vs JavaScript) is confirmed",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    },
+    {
+        "id": "gd_040",
+        "question": "What three on-chain instructions does the secondary_market Solana program expose?",
+        "expected_answer_summary": "create_sell_order, cancel_sell_order, and fill_order",
+        "generated_answer": "Sorry, I hit a rate limit while generating the answer. Please wait a moment and try again.",
+        "api_failure": true,
+        "passed_citation": null,
+        "retrieval_coverage": null,
+        "human_grade": "Pending"
+    }
+]
